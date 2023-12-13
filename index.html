@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>Bootstrap - JavaScript Activity</title>
+</head>
+<body class="p-3 m-0 border-0 bd-example m-0 border-0">
+  <div class="card p-3">
+    <!-- Content -->
+    <form id="inputForm" class="mb-3">
+      <label for="recipient-name" class="form-label">Name</label>
+      <input type="text" class="form-control" id="recipient-name">
+
+      <label for="crs" class="form-label">Course</label>
+      <input type="text" class="form-control" id="crs">
+
+      <label for="sectn" class="form-label">Section</label>
+      <input type="text" class="form-control" id="sectn">
+    </form>
+
+    <!-- Button -->
+    <button type="button" class="btn btn-primary" id="saveChangesBtn">Save Record</button>
+
+    <!-- Output -->
+    <div class="card-body m-0 mt-3 d-none" id="registeredCard">
+      <table class="table table-bordered">
+        <thead>
+          <tr class="table-secondary">
+            <th>Name</th>
+            <th>Course</th>
+            <th>Section</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Table rows will be dynamically added here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Alert for empty fields -->
+  <div class="alert alert-danger alert-dismissible fade d-none" role="alert" id="emptyFieldsAlert">
+    Please fill in all fields.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+  <!-- Script -->
+<script>
+  $(document).ready(function () {
+    $("#saveChangesBtn").click(function () {
+      var name = $("#recipient-name").val();
+      var course = $("#crs").val();
+      var section = $("#sectn").val();
+
+      // Check if all fields are filled
+      if (name && course && section) {
+        // Add a new row to the table
+        var newRow = $("<tr>");
+        newRow.append("<td>" + name + "</td>");
+        newRow.append("<td>" + course + "</td>");
+        newRow.append("<td>" + section + "</td>");
+        newRow.append('<td><button class="btn btn-danger btn-sm deleteBtn">Delete</button></td>');
+
+        // Append the new row to the table body
+        $("#tableBody").append(newRow);
+
+        // Clear input fields
+        $("#recipient-name, #crs, #sectn").val("");
+
+        // Show the table if it was hidden
+        $("#registeredCard").removeClass("d-none");
+      } else {
+        // Show a pop-up alert if any field is empty
+        alert("Please fill in all fields.");
+      }
+    });
+
+    // Handle delete button click
+    $("#tableBody").on("click", ".deleteBtn", function () {
+      $(this).closest("tr").remove();
+
+      // Hide the table if all rows are removed
+      if ($("#tableBody tr").length === 0) {
+        $("#registeredCard").addClass("d-none");
+      }
+    });
+  });
+</script>
+</body>
+</html>
